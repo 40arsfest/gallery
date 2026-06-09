@@ -1,0 +1,11 @@
+bin/
+obj/
+node_modules/
+.DS_Store
+*.user
+*.suo
+.vs/
+.idea/
+
+# Lokal blob-URL (inte connection string) — kopiera från appsettings.Development.json.example
+wwwroot/appsettings.Development.json

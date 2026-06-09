@@ -1,0 +1,111 @@
+﻿@page "/"
+@using PhotoGallery.Models
+@using PhotoGallery.Services
+@inject IPhotoService PhotoService
+
+<PageHeader Title="40 år-årsfest" Subtitle="Fotoarkivet 2001–2010" />
+
+<section class="mb-10 rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-950 p-6 shadow-xl sm:p-10">
+    <p class="max-w-xl text-lg leading-relaxed text-zinc-300">
+        Livet e life
+    </p>
+    <button type="button"
+            class="mt-6 inline-flex min-h-12 items-center justify-center rounded-xl bg-amber-500 px-6 py-3 text-base font-semibold text-zinc-950 shadow-lg shadow-amber-500/20 transition hover:bg-amber-400 active:scale-[0.98]"
+            @onclick="OpenRandomMemory"
+            disabled="@(_years.Count == 0 || _loadingRandom)">
+        Slumpa ett foto
+    </button>
+</section>
+
+@if (_loading)
+{
+    <YearListSkeleton />
+}
+else if (!string.IsNullOrEmpty(_error))
+{
+    <p class="text-red-400">@_error</p>
+}
+else if (_years.Count == 0)
+{
+    <p class="text-zinc-400">Inga foton hittades.</p>
+}
+else
+{
+    <section>
+        <h2 class="mb-4 text-xl font-semibold text-zinc-200">År</h2>
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach (var year in _years)
+            {
+                <a href="@($"/year/{year.Year}")"
+                   class="group flex min-h-[4.5rem] items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-900/80 px-5 py-4 shadow-md transition hover:border-amber-500/40 hover:bg-zinc-800/80 hover:shadow-amber-500/5">
+                    <span class="text-2xl font-bold text-zinc-100 group-hover:text-amber-400">@year.Year</span>
+                    <div class="flex flex-col items-end gap-1">
+                        <span class="rounded-full bg-zinc-800 px-3 py-1 text-sm text-zinc-400 group-hover:bg-amber-500/20 group-hover:text-amber-300">
+                            @year.AlbumCount album
+                        </span>
+                        <span class="rounded-full bg-zinc-800 px-3 py-1 text-sm text-zinc-400 group-hover:bg-amber-500/20 group-hover:text-amber-300">
+                            @year.PhotoCount @(year.PhotoCount == 1 ? "foto" : "foton")
+                        </span>
+                    </div>
+                </a>
+            }
+        </div>
+    </section>
+}
+
+<Lightbox Photos="@_lightboxPhotos"
+          InitialIndex="0"
+          IsOpen="@_lightboxOpen"
+          OnClose="CloseLightbox" />
+
+@code {
+    private IReadOnlyList<YearSummary> _years = [];
+    private IReadOnlyList<PhotoItem> _lightboxPhotos = [];
+    private bool _lightboxOpen;
+    private bool _loading = true;
+    private bool _loadingRandom;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _years = await PhotoService.GetYearsAsync();
+        }
+        catch (HttpRequestException)
+        {
+            _error = "Kunde inte hämta fotoindex från Azure. Kontrollera CORS på storage-kontot och att uploadern är klar.";
+        }
+        catch (Exception)
+        {
+            _error = "Kunde inte ladda arkivet.";
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private async Task OpenRandomMemory()
+    {
+        if (_years.Count == 0 || _loadingRandom)
+            return;
+
+        _loadingRandom = true;
+        try
+        {
+            var photo = await PhotoService.GetRandomPhotoAsync();
+            if (photo is null)
+                return;
+
+            _lightboxPhotos = [photo];
+            _lightboxOpen = true;
+        }
+        finally
+        {
+            _loadingRandom = false;
+        }
+    }
+
+    private void CloseLightbox() => _lightboxOpen = false;
+}

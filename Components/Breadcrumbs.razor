@@ -1,0 +1,31 @@
+@using PhotoGallery.Services
+
+<nav aria-label="Brödsmulor" class="flex flex-wrap items-center gap-1 text-sm text-zinc-400">
+    <a href="/" class="min-h-11 min-w-11 inline-flex items-center rounded-lg px-2 text-amber-400 transition hover:text-amber-300">
+        Start
+    </a>
+    @if (!string.IsNullOrEmpty(Year))
+    {
+        <span class="text-zinc-600">/</span>
+        @if (string.IsNullOrEmpty(Album))
+        {
+            <span class="px-2 text-zinc-200">@Year</span>
+        }
+        else
+        {
+            <a href="@($"/year/{Year}")" class="min-h-11 inline-flex items-center rounded-lg px-2 text-amber-400 transition hover:text-amber-300">
+                @Year
+            </a>
+        }
+    }
+    @if (!string.IsNullOrEmpty(Album))
+    {
+        <span class="text-zinc-600">/</span>
+        <span class="px-2 text-zinc-200">@PhotoQueries.FormatAlbumTitle(Album)</span>
+    }
+</nav>
+
+@code {
+    [Parameter] public string? Year { get; set; }
+    [Parameter] public string? Album { get; set; }
+}

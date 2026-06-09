@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>40 år – Fotoarkivet</title>
+    <base href="/" />
+    <link rel="preload" id="webassembly" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="PhotoGallery.styles.css" rel="stylesheet" />
+    <script type="importmap"></script>
+</head>
+
+<body>
+    <script>
+        (function () {
+            var target = sessionStorage.getItem('gallery-spa-redirect');
+            if (!target) return;
+            sessionStorage.removeItem('gallery-spa-redirect');
+            history.replaceState(null, '', target);
+        })();
+    </script>
+    <div id="app">
+        <div class="flex min-h-screen flex-col items-center justify-center gap-4 bg-zinc-950 text-zinc-400">
+            <div class="h-10 w-10 animate-spin rounded-full border-2 border-amber-500 border-t-transparent"></div>
+            <p>Laddar fotoarkivet…</p>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui" class="fixed bottom-0 left-0 right-0 z-[100] hidden border-t border-red-900 bg-red-950 p-4 text-red-200">
+        Ett fel uppstod.
+        <a href="." class="ml-2 underline">Ladda om</a>
+        <button type="button" class="dismiss float-right">✕</button>
+    </div>
+    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+</body>
+
+</html>

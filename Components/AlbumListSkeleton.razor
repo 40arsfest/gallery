@@ -1,0 +1,17 @@
+<section aria-busy="true" aria-label="Laddar album">
+    <SkeletonBlock Class="mb-4 h-7 w-16" />
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        @for (var i = 0; i < Count; i++)
+        {
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900/40 p-5">
+                <SkeletonBlock Class="h-6 w-48 max-w-full" />
+                <SkeletonBlock Class="mt-3 h-4 w-24" />
+                <SkeletonBlock Class="mt-2 h-4 w-16" />
+            </div>
+        }
+    </div>
+</section>
+
+@code {
+    [Parameter] public int Count { get; set; } = 4;
+}

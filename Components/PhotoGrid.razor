@@ -1,0 +1,26 @@
+@using PhotoGallery.Models
+
+<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-4">
+    @for (var i = 0; i < Photos.Count; i++)
+    {
+        var index = i;
+        var photo = Photos[i];
+        <button type="button"
+                class="group relative aspect-[4/3] overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 shadow-md transition hover:border-amber-500/50 hover:shadow-amber-500/10 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                @onclick="() => OnPhotoClick.InvokeAsync(index)"
+                aria-label="@($"Öppna {photo.FileName}")">
+            <img src="@photo.ThumbnailUrl"
+                 alt="@photo.FileName"
+                 loading="lazy"
+                 class="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
+                <span class="truncate text-xs text-zinc-200">@photo.FileName</span>
+            </div>
+        </button>
+    }
+</div>
+
+@code {
+    [Parameter] public IReadOnlyList<PhotoItem> Photos { get; set; } = [];
+    [Parameter] public EventCallback<int> OnPhotoClick { get; set; }
+}

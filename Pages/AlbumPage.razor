@@ -1,0 +1,74 @@
+@page "/year/{Year}/{AlbumSlug}"
+@using PhotoGallery.Models
+@using PhotoGallery.Services
+@inject IPhotoService PhotoService
+
+@if (_loading)
+{
+    <PageHeaderSkeleton />
+    <PhotoGridSkeleton />
+}
+else if (_albumPhotos.Count == 0)
+{
+    <PageHeader Year="@Year" Album="@_album" Title="@_albumTitle" Subtitle="@_subtitle" />
+    <p class="text-zinc-400">Albumet hittades inte.</p>
+    <a href="@($"/year/{Year}")" class="mt-4 inline-block text-amber-400">← Tillbaka</a>
+}
+else
+{
+    <PageHeader Year="@Year"
+                Album="@_album"
+                Title="@_albumTitle"
+                Subtitle="@_subtitle" />
+
+    <PhotoGrid Photos="@_albumPhotos" OnPhotoClick="OpenPhoto" />
+}
+
+<Lightbox Photos="@_albumPhotos"
+          InitialIndex="@_lightboxIndex"
+          IsOpen="@_lightboxOpen"
+          OnClose="CloseLightbox" />
+
+@code {
+    [Parameter] public string Year { get; set; } = "";
+    [Parameter] public string AlbumSlug { get; set; } = "";
+
+    private IReadOnlyList<PhotoItem> _albumPhotos = [];
+    private string _album = "";
+    private string _albumTitle = "";
+    private string _subtitle = "";
+    private int _lightboxIndex;
+    private bool _lightboxOpen;
+    private bool _loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var result = await PhotoService.GetAlbumPhotosAsync(Year, AlbumSlug);
+            if (result is not null)
+            {
+                _album = result.Album;
+                _albumTitle = result.AlbumTitle;
+                _albumPhotos = result.Photos;
+                _subtitle = $"{_albumPhotos.Count} {(_albumPhotos.Count == 1 ? "foto" : "foton")}";
+            }
+        }
+        catch (HttpRequestException)
+        {
+            _albumPhotos = [];
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private void OpenPhoto(int index)
+    {
+        _lightboxIndex = index;
+        _lightboxOpen = true;
+    }
+
+    private void CloseLightbox() => _lightboxOpen = false;
+}
