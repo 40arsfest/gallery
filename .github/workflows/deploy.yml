@@ -56,6 +56,12 @@ jobs:
       - name: Publish Blazor app
         run: dotnet publish -c Release -p:BaseHref=/gallery/
 
+      - name: Set base href for GitHub Pages
+        run: |
+          INDEX=./bin/Release/net10.0/publish/wwwroot/index.html
+          sed -i 's|<base href="/" />|<base href="/gallery/" />|g' "$INDEX"
+          grep 'base href' "$INDEX"
+
       - name: Add GitHub Pages files
         run: |
           touch ./bin/Release/net10.0/publish/wwwroot/.nojekyll

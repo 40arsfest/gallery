@@ -16,4 +16,18 @@
     <Content Update="wwwroot\appsettings.Development.json" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
+  <!-- BaseHref MSBuild property does not rewrite index.html in .NET 10 WASM publish -->
+  <Target Name="ApplyBaseHref" AfterTargets="Publish" Condition="'$(BaseHref)' != ''">
+    <PropertyGroup>
+      <_PublishedIndexHtml>$(PublishDir)wwwroot\index.html</_PublishedIndexHtml>
+    </PropertyGroup>
+    <ReadLinesFromFile File="$(_PublishedIndexHtml)" Condition="Exists('$(_PublishedIndexHtml)')">
+      <Output TaskParameter="Lines" ItemName="_IndexLine" />
+    </ReadLinesFromFile>
+    <ItemGroup>
+      <_IndexLineUpdated Include="@(_IndexLine->Replace('&lt;base href=&quot;/&quot; /&gt;', '&lt;base href=&quot;$(BaseHref)&quot; /&gt;'))" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(_PublishedIndexHtml)" Lines="@(_IndexLineUpdated)" Overwrite="true" Condition="Exists('$(_PublishedIndexHtml)')" />
+  </Target>
+
 </Project>

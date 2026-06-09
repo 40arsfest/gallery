@@ -1,8 +1,14 @@
 ﻿@page "/not-found"
+@layout MainLayout
 
-<PageHeader Title="Sidan hittades inte" Subtitle="404" />
-
-<p class="text-zinc-400">Den här sidan finns inte i arkivet.</p>
-<a href="/" class="mt-6 inline-flex min-h-12 items-center rounded-xl bg-amber-500 px-6 py-3 font-semibold text-zinc-950 transition hover:bg-amber-400">
-    Till start
-</a>
+<section class="flex flex-col items-center py-12 text-center sm:py-20">
+    <p class="text-8xl font-bold tracking-tighter text-amber-500/90 sm:text-9xl">404</p>
+    <h1 class="mt-4 text-2xl font-bold text-zinc-50 sm:text-3xl">Sidan hittades inte</h1>
+    <p class="mt-3 max-w-md text-zinc-400">
+        Den här sidan finns inte i fotoarkivet — kanske ett tveksamt beslut från förr?
+    </p>
+    <a href="/"
+       class="mt-8 inline-flex min-h-12 items-center justify-center rounded-xl bg-amber-500 px-8 py-3 font-semibold text-zinc-950 shadow-lg shadow-amber-500/20 transition hover:bg-amber-400 active:scale-[0.98]">
+        Tillbaka till start
+    </a>
+</section>

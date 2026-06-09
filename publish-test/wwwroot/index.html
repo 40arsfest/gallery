@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>40 år – Fotoarkivet</title>
+<base href="/gallery/" />
+<link href="_framework/dotnet.tk2njw0nz7.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-M2BdJlwOdfD1nRih84gDiRuUpskV7m6QZGbzDLy80BU=" />
+<link rel="stylesheet" href="css/app.css" />
+<link rel="icon" type="image/png" href="favicon.png" />
+<link href="PhotoGallery.styles.css" rel="stylesheet" />
+<script type="importmap">{
+"imports": {
+"./_framework/blazor.webassembly.js": "./_framework/blazor.webassembly.958z1vx7fr.js",
+"./_framework/dotnet.native.js": "./_framework/dotnet.native.rjbmzc4jpg.js",
+"./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.r2kbxkuujc.js",
+"./_framework/dotnet.js": "./_framework/dotnet.tk2njw0nz7.js"
+},
+"scopes": {},
+"integrity": {
+"./_framework/blazor.webassembly.958z1vx7fr.js": "sha256-A59Tr9HqEhHMu8kU7kruLI9ayw5MRS6Lvc6z7jCbghk=",
+"./_framework/blazor.webassembly.js": "sha256-A59Tr9HqEhHMu8kU7kruLI9ayw5MRS6Lvc6z7jCbghk=",
+"./_framework/dotnet.js": "sha256-M2BdJlwOdfD1nRih84gDiRuUpskV7m6QZGbzDLy80BU=",
+"./_framework/dotnet.native.js": "sha256-95bE510j3EADMNW2OKa/DMBhu8N632dl5HGeBfXNEf4=",
+"./_framework/dotnet.native.rjbmzc4jpg.js": "sha256-95bE510j3EADMNW2OKa/DMBhu8N632dl5HGeBfXNEf4=",
+"./_framework/dotnet.runtime.js": "sha256-YyudibIWETMKrLb+nAZdJ+xDY7HY6BWf6s32UAdcvCU=",
+"./_framework/dotnet.runtime.r2kbxkuujc.js": "sha256-YyudibIWETMKrLb+nAZdJ+xDY7HY6BWf6s32UAdcvCU=",
+"./_framework/dotnet.tk2njw0nz7.js": "sha256-M2BdJlwOdfD1nRih84gDiRuUpskV7m6QZGbzDLy80BU="
+}
+}</script>
+</head>
+<body>
+<script>
+(function () {
+var target = sessionStorage.getItem('gallery-spa-redirect');
+if (!target) return;
+sessionStorage.removeItem('gallery-spa-redirect');
+history.replaceState(null, '', target);
+})();
+</script>
+<div id="app">
+<div class="flex min-h-screen flex-col items-center justify-center gap-4 bg-zinc-950 text-zinc-400">
+<div class="h-10 w-10 animate-spin rounded-full border-2 border-amber-500 border-t-transparent"></div>
+<p>Laddar fotoarkivet…</p>
+</div>
+</div>
+<div id="blazor-error-ui" class="fixed bottom-0 left-0 right-0 z-[100] hidden border-t border-red-900 bg-red-950 p-4 text-red-200">
+Ett fel uppstod.
+<a href="." class="ml-2 underline">Ladda om</a>
+<button type="button" class="dismiss float-right">✕</button>
+</div>
+<script src="_framework/blazor.webassembly.958z1vx7fr.js"></script>
+</body>
+</html>
