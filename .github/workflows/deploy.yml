@@ -58,9 +58,13 @@ jobs:
 
       - name: Set base href for GitHub Pages
         run: |
-          INDEX=./bin/Release/net10.0/publish/wwwroot/index.html
+          WWWROOT=./bin/Release/net10.0/publish/wwwroot
+          INDEX="$WWWROOT/index.html"
           sed -i 's|<base href="/" />|<base href="/gallery/" />|g' "$INDEX"
+          # index.html.gz/.br are generated before base href is patched and break asset paths
+          rm -f "$INDEX.gz" "$INDEX.br"
           grep 'base href' "$INDEX"
+          test "$(grep -o 'base href="/gallery/"' "$INDEX" | wc -l)" -eq 1
 
       - name: Add GitHub Pages files
         run: |

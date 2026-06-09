@@ -28,6 +28,8 @@
       <_IndexLineUpdated Include="@(_IndexLine->Replace('&lt;base href=&quot;/&quot; /&gt;', '&lt;base href=&quot;$(BaseHref)&quot; /&gt;'))" />
     </ItemGroup>
     <WriteLinesToFile File="$(_PublishedIndexHtml)" Lines="@(_IndexLineUpdated)" Overwrite="true" Condition="Exists('$(_PublishedIndexHtml)')" />
+    <!-- Pre-compressed index still had base href="/"; GitHub Pages may serve it instead -->
+    <Delete Files="$(_PublishedIndexHtml).gz;$(_PublishedIndexHtml).br" Condition="Exists('$(_PublishedIndexHtml)')" />
   </Target>
 
 </Project>
