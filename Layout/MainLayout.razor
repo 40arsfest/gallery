@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @using PhotoGallery.Services
 @inject NavigationManager Navigation
+@inject PasswordAuthService Auth
 
 <div class="min-h-screen bg-zinc-950">
     <header class="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-md">
@@ -11,11 +12,18 @@
                 </span>
                 <span class="text-xs text-zinc-500">Fotoarkivet</span>
             </a>
-            <a href="@GalleryNavigation.Home(Navigation)"
-               class="flex min-h-11 min-w-11 items-center justify-center rounded-lg px-3 text-sm text-amber-400 transition hover:bg-zinc-800 hover:text-amber-300"
-               aria-label="Till start">
-                Start
-            </a>
+            <div class="flex items-center gap-1">
+                <a href="@GalleryNavigation.Home(Navigation)"
+                   class="flex min-h-11 min-w-11 items-center justify-center rounded-lg px-3 text-sm text-amber-400 transition hover:bg-zinc-800 hover:text-amber-300"
+                   aria-label="Till start">
+                    Start
+                </a>
+                <button type="button"
+                        class="flex min-h-11 items-center justify-center rounded-lg px-3 text-sm text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-200"
+                        @onclick="LogoutAsync">
+                    Logga ut
+                </button>
+            </div>
         </div>
     </header>
 
@@ -27,3 +35,11 @@
         Fotoarkivet · 2001–2010 · 40-årsfest
     </footer>
 </div>
+
+@code {
+    private async Task LogoutAsync()
+    {
+        await Auth.LogoutAsync();
+        Navigation.NavigateTo("login");
+    }
+}

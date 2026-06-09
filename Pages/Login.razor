@@ -1,0 +1,92 @@
+@page "/login"
+@layout LoginLayout
+@attribute [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+@using PhotoGallery.Services
+@inject PasswordAuthService Auth
+@inject NavigationManager Navigation
+
+<div class="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-6 shadow-xl sm:p-8">
+    <h1 class="text-xl font-bold text-zinc-50 sm:text-2xl">Fotoarkivet</h1>
+    <p class="mt-1 text-sm text-zinc-400">Ange lösenord för att fortsätta</p>
+
+    <EditForm Model="@_form" OnValidSubmit="SubmitAsync" class="mt-6 space-y-4">
+        <div>
+            <label for="password" class="mb-1 block text-sm text-zinc-400">Lösenord</label>
+            <input id="password"
+                   type="password"
+                   @bind="_form.Password"
+                   @bind:event="oninput"
+                   class="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30"
+                   autocomplete="current-password" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(_error))
+        {
+            <p class="text-sm text-red-400" role="alert">@_error</p>
+        }
+
+        <button type="submit"
+                class="flex min-h-12 w-full items-center justify-center rounded-xl bg-amber-500 font-semibold text-zinc-950 transition hover:bg-amber-400 disabled:opacity-50"
+                disabled="@_submitting">
+            @(_submitting ? "Loggar in…" : "Logga in")
+        </button>
+    </EditForm>
+</div>
+
+@code {
+    private readonly LoginForm _form = new();
+    private string? _error;
+    private bool _submitting;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Auth.EnsureInitializedAsync();
+        if (Auth.IsAuthenticated)
+            Navigation.NavigateTo("/");
+    }
+
+    private async Task SubmitAsync()
+    {
+        _error = null;
+        _submitting = true;
+
+        try
+        {
+            if (!await Auth.LoginAsync(_form.Password))
+            {
+                _error = "Fel lösenord.";
+                return;
+            }
+
+            var returnUrl = GetReturnUrl();
+            Navigation.NavigateTo(returnUrl);
+        }
+        finally
+        {
+            _submitting = false;
+        }
+    }
+
+    private string GetReturnUrl()
+    {
+        var uri = new Uri(Navigation.Uri);
+        var query = uri.Query.TrimStart('?');
+        foreach (var part in query.Split('&', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var pair = part.Split('=', 2);
+            if (pair.Length == 2 && pair[0] == "returnUrl")
+            {
+                var path = Uri.UnescapeDataString(pair[1]);
+                if (!string.IsNullOrEmpty(path))
+                    return path.StartsWith('/') ? path : "/" + path;
+            }
+        }
+
+        return "/";
+    }
+
+    private sealed class LoginForm
+    {
+        public string Password { get; set; } = "";
+    }
+}
