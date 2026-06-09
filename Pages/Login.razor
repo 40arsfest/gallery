@@ -42,7 +42,7 @@
     {
         await Auth.EnsureInitializedAsync();
         if (Auth.IsAuthenticated)
-            Navigation.NavigateTo("/");
+            Navigation.NavigateTo(GalleryNavigation.Home(Navigation));
     }
 
     private async Task SubmitAsync()
@@ -59,7 +59,10 @@
             }
 
             var returnUrl = GetReturnUrl();
-            Navigation.NavigateTo(returnUrl);
+            Navigation.NavigateTo(
+                string.IsNullOrEmpty(returnUrl)
+                    ? GalleryNavigation.Home(Navigation)
+                    : GalleryNavigation.Href(Navigation, returnUrl));
         }
         finally
         {
@@ -67,7 +70,7 @@
         }
     }
 
-    private string GetReturnUrl()
+    private string? GetReturnUrl()
     {
         var uri = new Uri(Navigation.Uri);
         var query = uri.Query.TrimStart('?');
@@ -76,13 +79,13 @@
             var pair = part.Split('=', 2);
             if (pair.Length == 2 && pair[0] == "returnUrl")
             {
-                var path = Uri.UnescapeDataString(pair[1]);
-                if (!string.IsNullOrEmpty(path))
-                    return path.StartsWith('/') ? path : "/" + path;
+                var path = Uri.UnescapeDataString(pair[1]).TrimStart('/');
+                if (!string.IsNullOrEmpty(path) && path != "login")
+                    return path;
             }
         }
 
-        return "/";
+        return null;
     }
 
     private sealed class LoginForm
