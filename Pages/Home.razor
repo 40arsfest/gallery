@@ -2,6 +2,7 @@
 @using PhotoGallery.Models
 @using PhotoGallery.Services
 @inject IPhotoService PhotoService
+@inject NavigationManager Navigation
 
 <PageHeader Title="40 år-årsfest" Subtitle="Fotoarkivet 2001–2010" />
 
@@ -36,7 +37,7 @@ else
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             @foreach (var year in _years)
             {
-                <a href="@($"year/{year.Year}")"
+                <a href="@GalleryNavigation.Year(Navigation, year.Year)"
                    class="group flex min-h-[4.5rem] items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-900/80 px-5 py-4 shadow-md transition hover:border-amber-500/40 hover:bg-zinc-800/80 hover:shadow-amber-500/5">
                     <span class="text-2xl font-bold text-zinc-100 group-hover:text-amber-400">@year.Year</span>
                     <div class="flex flex-col items-end gap-1">

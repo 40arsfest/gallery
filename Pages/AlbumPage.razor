@@ -2,6 +2,7 @@
 @using PhotoGallery.Models
 @using PhotoGallery.Services
 @inject IPhotoService PhotoService
+@inject NavigationManager Navigation
 
 @if (_loading)
 {
@@ -12,7 +13,7 @@ else if (_albumPhotos.Count == 0)
 {
     <PageHeader Year="@Year" Album="@_album" Title="@_albumTitle" Subtitle="@_subtitle" />
     <p class="text-zinc-400">Albumet hittades inte.</p>
-    <a href="@($"year/{Year}")" class="mt-4 inline-block text-amber-400">← Tillbaka</a>
+    <a href="@GalleryNavigation.Year(Navigation, Year)" class="mt-4 inline-block text-amber-400">← Tillbaka</a>
 }
 else
 {

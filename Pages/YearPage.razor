@@ -2,6 +2,7 @@
 @using PhotoGallery.Models
 @using PhotoGallery.Services
 @inject IPhotoService PhotoService
+@inject NavigationManager Navigation
 
 @if (_loading)
 {
@@ -12,7 +13,7 @@
 else if (_albums.Count == 0)
 {
     <p class="text-zinc-400">Inga album hittades för @Year.</p>
-    <a href="./" class="mt-4 inline-block text-amber-400 hover:text-amber-300">← Tillbaka till start</a>
+    <a href="@GalleryNavigation.Home(Navigation)" class="mt-4 inline-block text-amber-400 hover:text-amber-300">← Tillbaka till start</a>
 }
 else
 {
@@ -23,7 +24,7 @@ else
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
             @foreach (var album in _albums)
             {
-                <a href="@($"year/{Year}/{album.AlbumSlug}")"
+                <a href="@GalleryNavigation.Album(Navigation, Year, album.AlbumSlug)"
                    class="group rounded-xl border border-zinc-800 bg-zinc-900/80 p-5 shadow-md transition hover:border-amber-500/40 hover:bg-zinc-800/80">
                     <h3 class="text-lg font-semibold text-zinc-100 group-hover:text-amber-400">
                         @album.AlbumTitle

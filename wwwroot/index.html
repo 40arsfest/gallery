@@ -18,6 +18,9 @@
             var target = sessionStorage.getItem('gallery-spa-redirect');
             if (!target) return;
             sessionStorage.removeItem('gallery-spa-redirect');
+            if (!target.startsWith('/gallery/') && !target.startsWith('/gallery')) {
+                target = '/gallery' + (target.startsWith('/') ? target : '/' + target);
+            }
             history.replaceState(null, '', target);
         })();
     </script>
