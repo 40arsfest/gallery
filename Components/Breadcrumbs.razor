@@ -1,7 +1,7 @@
 @using PhotoGallery.Services
 
 <nav aria-label="Brödsmulor" class="flex flex-wrap items-center gap-1 text-sm text-zinc-400">
-    <a href="/" class="min-h-11 min-w-11 inline-flex items-center rounded-lg px-2 text-amber-400 transition hover:text-amber-300">
+    <a href="./" class="min-h-11 min-w-11 inline-flex items-center rounded-lg px-2 text-amber-400 transition hover:text-amber-300">
         Start
     </a>
     @if (!string.IsNullOrEmpty(Year))
@@ -13,7 +13,7 @@
         }
         else
         {
-            <a href="@($"/year/{Year}")" class="min-h-11 inline-flex items-center rounded-lg px-2 text-amber-400 transition hover:text-amber-300">
+            <a href="@($"year/{Year}")" class="min-h-11 inline-flex items-center rounded-lg px-2 text-amber-400 transition hover:text-amber-300">
                 @Year
             </a>
         }
