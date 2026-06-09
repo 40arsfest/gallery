@@ -1,3 +1,46 @@
+export function canShare() {
+    return typeof navigator.share === 'function';
+}
+
+export async function sharePhoto({ url, title, text, fileName }) {
+    if (!navigator.share)
+        return { ok: false, reason: 'unsupported' };
+
+    const shareTitle = title || '40 år – Fotoarkivet';
+
+    try {
+        const response = await fetch(url, { mode: 'cors' });
+        if (response.ok) {
+            const blob = await response.blob();
+            const ext = blob.type === 'image/png' ? '.png' : '.jpg';
+            const file = new File([blob], fileName || `foto${ext}`, {
+                type: blob.type || 'image/jpeg'
+            });
+
+            if (navigator.canShare?.({ files: [file] })) {
+                await navigator.share({ files: [file], title: shareTitle, text: text || '' });
+                return { ok: true };
+            }
+        }
+    } catch {
+        // Fall back to sharing the image URL.
+    }
+
+    try {
+        await navigator.share({
+            title: shareTitle,
+            text: text || '',
+            url
+        });
+        return { ok: true };
+    } catch (e) {
+        if (e?.name === 'AbortError')
+            return { ok: true };
+
+        return { ok: false, reason: e?.message || 'failed' };
+    }
+}
+
 export function registerSwipe(element, dotNetRef) {
     let startX = 0;
     let startY = 0;
