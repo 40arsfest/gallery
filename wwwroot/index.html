@@ -15,6 +15,14 @@
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="apple-touch-startup-image" href="splash/iphone-se.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="splash/iphone-x.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="splash/iphone-xr.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="splash/iphone-xs-max.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="splash/iphone-12.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="splash/iphone-15-pro.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="splash/iphone-12-pro-max.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link rel="apple-touch-startup-image" href="splash/iphone-15-pro-max.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
     <link rel="manifest" href="manifest.webmanifest" />
     <script type="importmap"></script>
 </head>
@@ -32,9 +40,13 @@
         })();
     </script>
     <div id="app">
-        <div class="flex min-h-screen flex-col items-center justify-center gap-4 bg-zinc-950 text-zinc-400">
-            <div class="h-10 w-10 animate-spin rounded-full border-2 border-amber-500 border-t-transparent"></div>
-            <p>Laddar fotoarkivet…</p>
+        <div class="flex min-h-screen flex-col items-center justify-center gap-5 bg-zinc-950 px-6 text-center">
+            <img src="apple-touch-icon.png" alt="" width="96" height="96" class="rounded-[22%] shadow-lg shadow-amber-500/10" />
+            <div>
+                <p class="text-3xl font-bold text-amber-500">40 år</p>
+                <p class="mt-1 text-sm text-zinc-400">Fotoarkivet</p>
+            </div>
+            <div class="mt-2 h-8 w-8 animate-spin rounded-full border-2 border-amber-500 border-t-transparent" aria-hidden="true"></div>
         </div>
     </div>
 
